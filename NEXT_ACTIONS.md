@@ -6,3 +6,4 @@
 4. Cross-station features from Other_Mumbai_Stations_2025_2026 (Sewri etc.).
 5. CatBoost comparison + 3-seed averaging; per-horizon blend weight.
 6. Retrain on 31 Oct update; candidate for public window 27–28 Oct.
+- E011 (partial): robust level estimators: median not better than mean; mean14 blend h97-144 39.57 vs mean7-based 38.75; NaN bug for 7d windows with fully-missing weeks -> fix fallback then rerun.
