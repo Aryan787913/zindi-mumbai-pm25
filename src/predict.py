@@ -15,7 +15,7 @@ def main(out, w=0.5, rounds=600):
     X = build(wide, tr_orig); X = X[X.y.notna()]
     fc = feat_cols(X)
     m = lgb.train(params(), lgb.Dataset(X[fc], X.y.values, categorical_feature=['station']), num_boost_round=rounds)
-    Xt = build(wide, pd.DatetimeIndex([T]), with_target=False, hmax=144)
+    Xt = build(wide, pd.DatetimeIndex([T]), with_target=False, hmax=192)
     Xt['p_lgb'] = m.predict(Xt[fc]); Xt['location_id'] = [STATIONS[i] for i in Xt.station]
     te['h'] = ((te.ts - T) / pd.Timedelta(hours=1)).round().astype(int)
     assert te.h.min() >= 1, 'test overlaps train'

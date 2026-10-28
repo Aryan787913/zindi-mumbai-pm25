@@ -1,7 +1,7 @@
 """Origin-based direct multi-horizon features. All features use data with ts <= T only (trailing windows)."""
 import numpy as np, pandas as pd
 from data import STATIONS
-H = 144
+H = 192
 DIWALI = {2025: '2025-10-20', 2026: '2026-11-08'}  # Lakshmi Puja (drikpanchang)
 
 def origin_table(wide):

@@ -5,8 +5,8 @@ since source data arrive ~72-115 h late, the final 10 Nov 09:00 data likely end 
 import numpy as np, pandas as pd
 from data import STATIONS
 from metrics import rmse
-H = 144
-BUCKETS = [(1, 48), (49, 96), (97, 144)]
+H = 192
+BUCKETS = [(1, 48), (49, 96), (97, 144), (145, 192)]
 
 def origins(wide, start, end, step_h=72, hour=0):
     idx = wide.index
