@@ -5,3 +5,6 @@ File: submissions/submission_003_blend_v2_h192.csv sha256 0edeee4f… (candidate
 
 ## SUBMISSION GATE (Aryan wants every try to move the rank up; adopted 2026-10-28)
 Submit a new file only if ALL hold: (1) beats current best offline by >=0.3 RMSE on BOTH h1-48 and h97-192, overall and in recent26 fold; (2) no tuning on public LB windows; (3) no blanket post-hoc multipliers (E010 lesson); (4) format asserts pass. Data-update retrains of the current best are always allowed (fresher data). Otherwise keep improving offline.
+
+## 2026-10-28 batch result
+Public best now s009_blend_nocal (LGB without doy/diwali calendar feats, 50/50 with lvl7xshape28): 8.0746, rank #4 (was 8.970/#18). 3-seed avg also helped (8.699). Next: nocal + 3-seed, and offline-validate nocal (calendar feats may overfit with only one prior autumn).

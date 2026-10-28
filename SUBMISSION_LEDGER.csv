@@ -8,3 +8,11 @@ s007_blend_w07.csv,ba1a71445ff2d9893e0887f09f1b1d0037c0ad7ec3a6b787281df8bc1628f
 s008_blend_3seed.csv,97b36f49ed548340a025a9ae38b60413fa70a64d5d0876b55e5a2ba9b3e94df6,submitting batch 2026-10-28 23:05 IST,2026-10-28
 s009_blend_nocal.csv,9c54283c1ee3e04bcf0e8ae5e8186c37134b008a53ddf4cd20efeae41be4a71e,submitting batch 2026-10-28 23:05 IST,2026-10-28
 s010_blend_base14.csv,b565f80563922b7f48a10da8de7353f8e131163543eb04fef7cb437f92f0d77e,submitting batch 2026-10-28 23:05 IST,2026-10-28
+submission_001_baseline_lvl7xshape28.csv,score,9.763831859,2026-10-28
+s005_lgb_only.csv,score,9.360590072,2026-10-28
+s006_blend_w03.csv,score,9.152546149,2026-10-28
+s007_blend_w07.csv,score,8.982449252,2026-10-28
+s008_blend_3seed.csv,score,8.699403497,2026-10-28
+s009_blend_nocal.csv,score,8.074616612,2026-10-28
+s010_blend_base14.csv,score,8.831724347,2026-10-28
+s011_blend_nocal_3seed.csv,score,8.127839025,2026-10-28

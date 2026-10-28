@@ -30,9 +30,9 @@ def out(name, lgbcol, w, basecol='base'):
     assert len(sub) == 2592 and (sub.ID.values == ss.ID.values).all() and np.isfinite(sub.Target).all() and (sub.Target >= 0).all()
     f = f'submissions/{name}.csv'; sub.to_csv(f, index=False)
     print(name, hashlib.sha256(open(f, 'rb').read()).hexdigest()[:12], 'mean %.2f' % sub.Target.mean(), 'pub-window mean %.2f' % sub.Target[te.ts < '2026-10-24'].mean())
-out('s005_lgb_only', 'lgb42', 1.0)
-out('s006_blend_w03', 'lgb42', 0.3)
-out('s007_blend_w07', 'lgb42', 0.7)
-out('s008_blend_3seed', 'lgb3s', 0.5)
-out('s009_blend_nocal', 'lgbnocal', 0.5)
-out('s010_blend_base14', 'lgb42', 0.5, 'base14')
+
+
+
+
+Xt['lgbnc3']=(Xt.lgbnocal+fit_pred(drop=('doy_s','doy_c','diwali_off'),seed=7)+fit_pred(drop=('doy_s','doy_c','diwali_off'),seed=2026))/3; te=te.merge(Xt[['location_id','h','lgbnc3']],on=['location_id','h'],how='left'); out('s011_blend_nocal_3seed','lgbnc3',0.5)
+
