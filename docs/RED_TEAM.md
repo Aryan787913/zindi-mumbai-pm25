@@ -1,0 +1,14 @@
+# RED_TEAM review (judge / code-review perspective) — 2026-10-28 22:20 IST
+Severity: H = could cost the win or eligibility, M = measurable score risk, L = hygiene.
+
+1. [H] Horizon assumption. Private window 11–12 Nov is only 97–144 h ahead IF the final Train ends ~7 Nov 00:00. Source lag is 72–232 h (median 91 h). If Train ends ~5 Nov, private rows sit at h 145–192 where LGB currently has NO model (baseline only). FIX: extend direct model to hmax=192 (cheap). predict.py already computes h from the real last timestamp, so it adapts automatically.
+2. [H] Diwali timing. 8 Nov 2026 is 3–4 days before the private window. Train has exactly one Diwali (20 Oct 2025). Calendar features doy_s/doy_c (top importance) encode 2025's festival dates → the model may "expect" the spike near 20 Oct, not 8 Nov. diwali_off is learned from n=1 event. FIX: replace doy with season-level features (rolling 30d level, last-year-same-window level ratio), estimate a post-Diwali multiplier from 2018–2020 + 2024 history across stations, validate it on Diwali 2025 only as a sanity check.
+3. [H] Rules/eligibility. External data rule conflicts (RULES_AUDIT C3). Open-Meteo is used only if listed on the ClimateVerse challenge page; keep a no-external-data model ready. Weather currently not in the best model, so the submitted candidate is internal-data only. AutoML: none used.
+4. [M] Validation optimism. "Blocked" CV lets autumn25 training see 2026 data (future year). Strict expanding CV scores ~4–5 RMSE worse. Real test (Nov 2026 with Oct–Nov 2025 history) sits between. Treat gains <1 RMSE as noise; we have 72 origins only.
+5. [M] Weather FAILED: adding 5-day-lead Open-Meteo forecasts made recent26 fold much worse (12.8 → 20.9) and h97–144 overall 39.3 → 40.5. Likely the model uses temperature/humidity as a season proxy learned from one year → spurious under shift. Not adopted. Retry only as anomalies (deviation from 30-day weather mean) or rain/wind-only.
+6. [M] Outliers. Values >1000 masked (sensor faults up to 241,588). If the scoring truth contains such a value, everyone's RMSE explodes equally; nothing to gain. Values 300–1000 at Shivaji Nagar are plausible (Diwali, Deonar dump fires) and kept.
+7. [M] Public LB overfit. Public windows are different days (22–23 Oct, 27–28 Oct, …). Do not tune to them; use only as a sanity check (≤1–2 submissions per window).
+8. [L] Reproducibility. System packages were wiped once mid-session → now pinned venv + requirements.lock.txt + git. Seeds fixed (42), deterministic=True. Code review would pass: no hard-coded test targets, no future data.
+9. [L] Format. predict.py asserts 2,592 rows, exact ID order, finite non-negative. Verified on both candidate files.
+
+Verdict: pipeline is clean and leak-tested; biggest open risks are #1 (fixed next) and #2 (main research item).

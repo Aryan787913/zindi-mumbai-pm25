@@ -6,3 +6,5 @@ E003,2026-10-28 22:00 IST,v0.1,lgb ratio target no cal,same,see src/features.py,
 E004,2026-10-28 22:00 IST,v0.1,lgb log target no cal,same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 44.54,,,log hurts RMSE (underpredicts spikes),,reject
 E005,2026-10-28 22:00 IST,v0.1,lgb raw no cal expanding CV,same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 44.35,,,"strict CV, less autumn data",,reference
 E006,2026-10-28 22:00 IST,v0.1,blend 0.5 lgb(E001)+0.5 lvl7xshape28,-,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 38.77; all 38.19; h1-48 34.92,,,-6.2% vs best baseline at h97+,,retain -> submission_002
+E007,2026-10-28 22:15 IST,v0.2,lgb raw + Open-Meteo prev-day5 weather (all feats),600 rds lr.03,features.py+weather.py,rolling-origin blocked,42,,h97-144 40.47 (vs 39.26); recent26 20.88 (vs 12.84),,,weather as season proxy -> shift,reject,reject
+E008,2026-10-28 22:15 IST,v0.2,"lgb raw + weather, no calendar",600 rds lr.03,features.py+weather.py,rolling-origin blocked,42,,h97-144 40.71; recent26 15.63,,,weather as season proxy -> shift,reject,reject
