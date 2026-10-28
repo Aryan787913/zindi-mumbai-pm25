@@ -1,0 +1,8 @@
+exp_id,datetime_ist,code_version,model,hyperparams,feature_groups,validation,seed,fold_rmse,mean_rmse,std_rmse,runtime_s,vs_baseline,limitations,decision
+E000,2026-10-28 22:00 IST,v0.1,baselines(6),"rolling-origin 72 origins, step 72h, h1-144",see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",-,,persist 57.81 / mean7d 40.89 / lvl7xshape28 41.35 (h97-144),,,mean7d best simple at h97+,,retain lvl7xshape28 as anchor
+E001,2026-10-28 22:00 IST,v0.1,"lgb raw, all feats incl doy+diwali_off, blocked CV",600 rds lr.03 leaves31,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 39.26; all 39.60,,,doy/diwali single-year risk,,retain (in blend)
+E002,2026-10-28 22:00 IST,v0.1,"lgb raw, no calendar",same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 41.87,,,calendar helps ~2.6,,reject
+E003,2026-10-28 22:00 IST,v0.1,lgb ratio target no cal,same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,NaN in winter fold (m168 NaN) - bug,,,fix NaN handling,,investigate
+E004,2026-10-28 22:00 IST,v0.1,lgb log target no cal,same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 44.54,,,log hurts RMSE (underpredicts spikes),,reject
+E005,2026-10-28 22:00 IST,v0.1,lgb raw no cal expanding CV,same,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 44.35,,,"strict CV, less autumn data",,reference
+E006,2026-10-28 22:00 IST,v0.1,blend 0.5 lgb(E001)+0.5 lvl7xshape28,-,see src/features.py,"rolling-origin, folds autumn25/winter26/recent26",42,,h97-144 38.77; all 38.19; h1-48 34.92,,,-6.2% vs best baseline at h97+,,retain -> submission_002
