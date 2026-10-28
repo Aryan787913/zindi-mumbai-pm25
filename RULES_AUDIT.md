@@ -48,3 +48,4 @@ Audited: 2026-10-28 21:30 IST. Sources fetched live:
 ## 5. Actions needing user authorisation
 - Posting C1/C3/C4 clarifications on the discussion board.
 - Any submission to Zindi.
+- 2026-10-28: Zindi site shows total cap 1/200 (daily 10). Keep conservative 140 cap.

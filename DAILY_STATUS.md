@@ -11,3 +11,4 @@
 - Data downloaded (signed-in browser), forensics done, validation framework + leakage test (pytest 2 passed).
 - Best: blend_v1 h97-144 RMSE 38.77 vs baseline 40.89. submission_001/002 files ready, NOT submitted (awaiting approval).
 - Submissions used: 0/140.
+- 2026-10-28: submission_003 public 8.970 (rank 18; top 7.442); submission_004 season multiplier 11.959 (worse, reverted).

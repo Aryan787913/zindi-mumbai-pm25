@@ -7,7 +7,7 @@ from features import build, feat_cols
 from train_lgb import params
 from baselines import predict_baselines
 
-def main(out, w=0.5, rounds=600, season_mult=True):
+def main(out, w=0.5, rounds=600, season_mult=False):
     wide, _ = load_train(); te = load_test()
     T = wide.index[-1]
     idx = wide.index
