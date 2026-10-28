@@ -7,7 +7,7 @@ from features import build, feat_cols
 from train_lgb import params
 from baselines import predict_baselines
 
-def main(out, w=0.5, rounds=600):
+def main(out, w=0.5, rounds=600, season_mult=True):
     wide, _ = load_train(); te = load_test()
     T = wide.index[-1]
     idx = wide.index
@@ -25,6 +25,9 @@ def main(out, w=0.5, rounds=600):
     te['p_base'] = base
     te = te.merge(Xt[['location_id', 'h', 'p_lgb']], on=['location_id', 'h'], how='left')
     te['Target'] = np.where(te.p_lgb.notna(), w * te.p_lgb + (1 - w) * te.p_base, te.p_base)
+    if season_mult:  # E010: Oct-Nov rising-season under-prediction correction (validated Oct-Nov 2025 & Oct 2026)
+        mo = te.ts.dt.month.isin([10, 11])
+        te.loc[mo, 'Target'] *= np.where(te.loc[mo, 'h'] <= 96, 1.10, 1.15)
     te['Target'] = te.Target.clip(lower=0)
     sub = te[['ID', 'Target']]
     ss = pd.read_csv('data/raw/SampleSubmission.csv')
