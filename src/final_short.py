@@ -13,7 +13,9 @@ from final_submit import f3_shape
 
 HM = 63
 CAL = ['doy_s', 'doy_c', 'diwali_off']
-FILES = {}  # name -> function(DataFrame of components) -> prediction; filled below
+# Chosen 10 Nov 15:35 IST from bt_short (65 origins) + bt_hist (5 post-Diwali seasons): LightGBM hurts at h16-63 (spikes),
+# simple level decay wins. Pair = the two fade speeds (best-of-2 selected); dec48 is uploaded LAST (dry/calm forecast).
+FILES = {'fade24': lambda t: t.dec24f3, 'fade48': lambda t: t.dec48f3}
 
 
 def components():
