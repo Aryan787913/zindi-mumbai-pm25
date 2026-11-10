@@ -1,7 +1,9 @@
 """Final 2-file submission (see WHAT_TO_DO.md, 'Winning approach').
 base    = 28-day mean level per station x smooth 24-h shape (Fourier, 3 harmonics, from last 28 days)
 LGB     = direct forecast h1-192, all features (incl. calendar), seed 42, 600 rounds
-File A  = 0.5*LGB + 0.5*base ; File B = 0.2*LGB + 0.8*base ; November forecast rows x1.35 in both.
+File A  = 0.2*LGB + 0.8*base, Nov rows x1.35 (validated recipe)
+File B  = same, Nov rows x1.60 (hedge for a late, 8-Nov Diwali; past 11-12 Nov / prior-28-day ratios were 1.23-1.85).
+Zindi scores the BEST of the 2 selected files, so the two files are deliberately different bets.
 Test hours already present in Train.csv are filled with the observed value (unscored / public only).
 Hours beyond h192 use base only. Usage: python src/final_submit.py [outdir]"""
 import numpy as np, pandas as pd, lightgbm as lgb, sys, os, hashlib, json
@@ -10,7 +12,7 @@ from data import load_train, load_test, STATIONS
 from features import build, feat_cols
 from train_lgb import params
 
-HMAX, NOV_K, ROUNDS = 192, 1.35, 600
+HMAX, ROUNDS = 192, 600
 
 
 def f3_shape(prof):
@@ -56,9 +58,9 @@ def main(outdir='submissions'):
     nov = fut & (te.ts.dt.month == 11)
     ss = pd.read_csv('data/raw/SampleSubmission.csv')
     reps = {}
-    for name, w in (('final_A_w05', 0.5), ('final_B_w02', 0.2)):
+    for name, w, k in (('final_A_k135', 0.2, 1.35), ('final_B_k160', 0.2, 1.60)):
         p = np.where(te.p_lgb.notna(), w * te.p_lgb + (1 - w) * te.p_base, te.p_base)
-        p = np.where(nov, p * NOV_K, p)
+        p = np.where(nov, p * k, p)
         p = np.where(~fut & te.obs.notna(), te.obs, p)        # already-observed hours
         p = np.clip(p, 0, None)
         sub = pd.DataFrame({'ID': te.ID, 'Target': p})
