@@ -30,3 +30,8 @@ Red team (10) and status:
 8 Hour shape from 28 days may miss post-Diwali night pattern - OPEN (not tested; low impact vs level).
 9 History stations differ from target stations - KNOWN LIMIT; 2025 and Train-based bt_short use the real 4 stations.
 10 Reproducibility for code review - DONE: deterministic (no randomness in final files), independent recompute max diff 0.0.
+
+## Weather test (10 Nov 15:50 IST, src/bt_weather.py, Open-Meteo historical-forecast archive Jan 2025-Oct 2026, 549 daily origins)
+Correction of fade level by forecast BLH / wind / rain anomalies: out-of-sample gain <=0.07 RMSE, improves <60% of months,
+and makes Oct/Nov WORSE (54.10 -> 54.29). REJECTED. 2026 forecast (BLH ~22% below prior days) would have added only ~+7%.
+Weather stays a tie-breaker only (fade48 = latest upload).
