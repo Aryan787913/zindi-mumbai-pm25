@@ -45,3 +45,14 @@ Top-12 pairs are all the same family (tau 12-18 + tau 48-72 x1.1-1.2) -> robust,
 Files: final1110v2_slow72x11.csv (upload 1st, select), final1110v2_fade12.csv (upload LAST, select; best single on both Diwali tests).
 Private means B/Malad/Byculla/Shivaji: fade12 51.3/63.8/41.8/61.6; slow72x11 58.4/105.1/44.8/86.9.
 Independent recompute: max diff 0.0 for both. Format checks pass.
+
+## v2 out-of-sample check (10 Nov 16:25 IST): leave-one-Diwali-season-out pair selection
+Pair chosen WITHOUT the held-out season (other seasons + 65 ordinary origins), scored on the held-out season:
+| held out | chosen pair | chosen | v2 | v1 |
+| 2018 | tau12+tau72 | 58.98 | 58.01 | 62.82 |
+| 2019 | tau12+tau72 | 28.69 | 28.39 | 29.36 |
+| 2021 | tau12+tau72 | 9.27 | 9.33 | 10.19 |
+| 2024 | tau12+tau72x1.1 | 35.10 | 35.10 | 34.73 |
+| 2025 | tau12+tau36x1.3 | 28.44 | 28.44 | 31.36 |
+Mean: honestly-selected 32.10, v2 31.85, v1 33.69. Selection beats v1 on 4/5 unseen seasons and always picks fast(12h) + slow.
+=> v2 confirmed; FROZEN. No further model changes.
