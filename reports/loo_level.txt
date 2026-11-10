@@ -1,0 +1,11 @@
+Leave-one-year-out, 11-12 Nov observations, cutoff 6 Nov 23:00, base = level x Fourier-3 shape (RMSE, ug/m3)
+year n_st actual_city m28_city clim_other  k1.0  k1.35  k1.6  clim  half_k135_clim
+2018   1     59.9       44.6      63.4     22.37 15.78 19.31 16.07 15.84
+2019  10     64.2       36.1      61.9     32.52 22.03 16.70 15.50 17.83
+2024  22     63.0       42.4      62.3     31.58 26.61 28.50 26.93 26.63
+2025   3     62.9       50.3      62.4     87.08 85.46 86.90 85.51 85.43
+mean                                       43.39 37.47 37.85 36.00 36.43
+Diwali-aligned (D+3,D+4; gaps 96/120/144) mean RMSE: k1.0 49.94, k1.2 47.82, k1.35 46.89, k1.5 46.53, k1.7 46.89 (bt_diwali.py)
+Caveats: 4 years only; 2018 has 1 station; history stations differ from the 4 target stations.
+Decision: A = 0.2 LGB + 0.8 base, k = 0.5*1.35 + 0.5*62.6/city28 (robust to an unusual 28-day level).
+          B = same, k = 1.60: high-side hedge (Zindi scores best of the 2 selected files).
