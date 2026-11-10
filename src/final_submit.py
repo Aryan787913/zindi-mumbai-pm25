@@ -1,21 +1,16 @@
-"""Final 2-file submission (see WHAT_TO_DO.md, 'Winning approach').
-base    = 28-day mean level per station x smooth 24-h shape (Fourier, 3 harmonics, from last 28 days)
-LGB     = direct forecast h1-192, all features (incl. calendar), seed 42, 600 rounds
-File A  = 0.2*LGB + 0.8*base; Nov rows x k_A, k_A = 0.5*1.35 + 0.5*(CLIM / city 28-day mean).
-          CLIM = 62.6 = mean city PM2.5 on 11-12 Nov in 2018/2019/2024/2025 (59.9/64.2/63.0/62.9, AdditionalHistory + Train).
-          Leave-one-year-out RMSE: k1.35 37.47, clim 36.00, this 50/50 36.43 (bt_diwali.py + reports/loo_level.txt).
-File B  = same, Nov rows x1.60 (hedge for a late, 8-Nov Diwali; past 11-12 Nov / prior-28-day ratios were 1.23-1.85).
-Zindi scores the BEST of the 2 selected files, so the two files are deliberately different bets.
-Test hours already present in Train.csv are filled with the observed value (unscored / public only).
-Hours beyond h192 use base only. Usage: python src/final_submit.py [outdir]"""
+"""Rebuild of Hark's FROZEN final pair (FINAL_PRIVATE_PLAN.md, UPDATE 2026-11-02 RN5, authoritative):
+PRIMARY_F3 = 1.35 (Nov target rows) x [0.5 * cal LGB + 0.5 * m28 level x F3(28 d shape)]  -> upload 1st, select
+BH         = 1.35 (Nov target rows) x [0.2 * cal LGB + 0.8 * m28 level x F3(28 d shape)]  -> upload LAST, select
+LGB: direct h1-192, all features incl. calendar, seed 42, 600 rounds. F3 = Fourier order-3 LSQ fit of the 28-day hour profile.
+NOTE: reconstructed on 10 Nov from the 28 Oct repo + Hark notes (Hark's final src was not in the handoff); not byte-verified
+against Hark's u1031/u1102 files. Usage: python src/final_submit.py [outdir] [tag]"""
 import numpy as np, pandas as pd, lightgbm as lgb, sys, os, hashlib, json
 sys.path.insert(0, os.path.dirname(__file__))
 from data import load_train, load_test, STATIONS
 from features import build, feat_cols
 from train_lgb import params
 
-HMAX, ROUNDS = 192, 600
-CLIM = 62.6
+HMAX, ROUNDS, K = 192, 600, 1.35
 
 
 def f3_shape(prof):
@@ -40,7 +35,7 @@ def base_components(wide, T):
     return lvl, shp
 
 
-def main(outdir='submissions'):
+def main(outdir='submissions', tag='final1110'):
     wide, _ = load_train(); te = load_test()
     T = wide.index[-1]
     idx = wide.index
@@ -60,10 +55,8 @@ def main(outdir='submissions'):
     fut = te.h >= 1
     nov = fut & (te.ts.dt.month == 11)
     ss = pd.read_csv('data/raw/SampleSubmission.csv')
-    city28 = float(np.mean(list(lvl.values())))
-    kA = 0.5 * 1.35 + 0.5 * CLIM / city28
     reps = {}
-    for name, w, k in (('final_A_clim', 0.2, kA), ('final_B_k160', 0.2, 1.60)):
+    for name, w, k in ((f'{tag}_primary_m28nov135_f3', 0.5, K), (f'{tag}_bh_w02_m28nov135_f3', 0.2, K)):
         p = np.where(te.p_lgb.notna(), w * te.p_lgb + (1 - w) * te.p_base, te.p_base)
         p = np.where(nov, p * k, p)
         p = np.where(~fut & te.obs.notna(), te.obs, p)        # already-observed hours
@@ -77,7 +70,7 @@ def main(outdir='submissions'):
         reps[name] = dict(file=out, sha256=hashlib.sha256(open(out, 'rb').read()).hexdigest()[:16],
                           private_mean=round(float(sub.Target[priv].mean()), 2),
                           private_h=f'{te.h[priv].min()}-{te.h[priv].max()}', lgb_rows_private=int(te.p_lgb[priv].notna().sum()))
-    print(json.dumps(dict(origin=str(T), city28=round(city28, 1), kA=round(kA, 3), level28={str(k): round(v, 1) for k, v in lvl.items()}, files=reps), indent=1))
+    print(json.dumps(dict(origin=str(T), level28={str(k): round(v, 1) for k, v in lvl.items()}, files=reps), indent=1))
 
 
 if __name__ == '__main__':
