@@ -4,3 +4,4 @@ reports/*.parquet
 models/
 __pycache__/
 .pytest_cache/
+reports/*.log
