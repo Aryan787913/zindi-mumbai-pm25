@@ -13,9 +13,13 @@ from final_submit import f3_shape
 
 HM = 63
 CAL = ['doy_s', 'doy_c', 'diwali_off']
-# Chosen 10 Nov 15:35 IST from bt_short (65 origins) + bt_hist (5 post-Diwali seasons): LightGBM hurts at h16-63 (spikes),
-# simple level decay wins. Pair = the two fade speeds (best-of-2 selected); dec48 is uploaded LAST (dry/calm forecast).
-FILES = {'fade24': lambda t: t.dec24f3, 'fade48': lambda t: t.dec48f3}
+# v1 (15:35): fade24 + fade48. v2 (15:55, RED TEAM 2): best-of-2 pair search over 171 pairs on 3 test sets
+# (65 ordinary origins, 5 post-Diwali seasons, Diwali/Nov stress): fade12 + slow72 x1.1 wins all three
+# (19.25/31.85/49.40 vs 19.53/33.69/51.58). fade12 = LAST upload (best single on both Diwali tests).
+def _dec(t, tau):
+    l28 = t.m28f3; l24 = t.m24f3; hh = np.clip(t.h, 0, None)
+    return l28 + (l24 - l28) * np.exp(-hh / tau)
+FILES = {'fade12': lambda t: _dec(t, 12), 'slow72x11': lambda t: 1.1 * _dec(t, 72)}
 
 
 def components():

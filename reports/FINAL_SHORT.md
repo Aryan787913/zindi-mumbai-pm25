@@ -35,3 +35,13 @@ Red team (10) and status:
 Correction of fade level by forecast BLH / wind / rain anomalies: out-of-sample gain <=0.07 RMSE, improves <60% of months,
 and makes Oct/Nov WORSE (54.10 -> 54.29). REJECTED. 2026 forecast (BLH ~22% below prior days) would have added only ~+7%.
 Weather stays a tie-breaker only (fade48 = latest upload).
+
+## v2 (10 Nov 15:55 IST) - RED TEAM 2: pair chosen for BEST-OF-2, supersedes v1 (fade24 + fade48)
+Finding: v1 files were too similar (fail together). Best-of-2 search over 171 pairs on 3 test sets:
+| pair | ordinary (65) | 5 post-Diwali seasons | Diwali/Nov stress |
+| v1 fade24 + fade48 | 19.53 | 33.69 | 51.58 |
+| v2 fade12 + slow72 x1.1 | 19.25 | 31.85 | 49.40 |
+Top-12 pairs are all the same family (tau 12-18 + tau 48-72 x1.1-1.2) -> robust, not a lucky pick.
+Files: final1110v2_slow72x11.csv (upload 1st, select), final1110v2_fade12.csv (upload LAST, select; best single on both Diwali tests).
+Private means B/Malad/Byculla/Shivaji: fade12 51.3/63.8/41.8/61.6; slow72x11 58.4/105.1/44.8/86.9.
+Independent recompute: max diff 0.0 for both. Format checks pass.
